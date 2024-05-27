@@ -165,6 +165,6 @@ class IphoneCalcViewModel : ViewModel() {
 sealed class CalculatorEvent {
     data class Number(val value: Int) : CalculatorEvent()
     data class Calculation(val operation: Operation): CalculatorEvent()
-    object Equals : CalculatorEvent()
-    object AllClear : CalculatorEvent()
+    data object Equals : CalculatorEvent()
+    data object AllClear : CalculatorEvent()
 }

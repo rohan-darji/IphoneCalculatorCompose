@@ -7,9 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,16 +34,17 @@ fun WorkingsTVComponent(mutableValueState: State<String>) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Black),
-        contentAlignment = Alignment.CenterEnd
+            .height(200.dp)
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.TopEnd
     ) {
         Text(
             text = mutableValueState.value,
-            style = MaterialTheme.typography.headlineLarge.copy(
-                textAlign = TextAlign.Start,
-                fontSize = 80.sp,
-                color = Color.White
-            )
+            textAlign = TextAlign.End,
+            fontSize = 80.sp,
+            fontWeight = FontWeight.Bold,
+            color = White,
+            maxLines = 2,
         )
     }
 }
@@ -53,7 +56,7 @@ fun KeyboardComponent(
     onNumberChange: (Int) -> Unit,
     onOperatorClick: (Operation) -> Unit
 ) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         FunctionButton(
             button = Operation.C
         ) {
@@ -73,7 +76,7 @@ fun KeyboardComponent(
             onClick = onOperatorClick
         )
     }
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         NumberButton(
             text = "7",
             onClick = onNumberChange
@@ -91,7 +94,7 @@ fun KeyboardComponent(
             onClick = onOperatorClick
         )
     }
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         NumberButton(
             text = "4",
             onClick = onNumberChange
@@ -109,7 +112,7 @@ fun KeyboardComponent(
             onClick = onOperatorClick
         )
     }
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         NumberButton(
             text = "1",
             onClick = onNumberChange
@@ -127,10 +130,11 @@ fun KeyboardComponent(
             onClick = onOperatorClick
         )
     }
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Absolute.SpaceAround) {
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         NumberButton(
             text = "0",
             onClick = onNumberChange,
+            sizeModifier = Modifier.size(width = 192.dp, height = 95.dp)
         )
         DecimalButton(
             button = Operation.DECIMAL
@@ -193,6 +197,7 @@ fun DecimalButton(
 fun NumberButton(
     text: String,
     onClick: (Int) -> Unit = {},
+    sizeModifier: Modifier = Modifier.size(width = 95.dp, height = 95.dp),
 ) {
     CalcButton(
         text = text,
@@ -201,6 +206,7 @@ fun NumberButton(
         onClick = {
             onClick(text.toInt())
         },
+        sizeModifier = sizeModifier
     )
 }
 
@@ -208,22 +214,22 @@ fun NumberButton(
 fun CalcButton(
     text: String,
     textColor: Color,
+    sizeModifier: Modifier = Modifier.size(width = 95.dp, height = 95.dp),
     backgroundColor: Color,
     onClick: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .background(color = backgroundColor)
-            .size(90.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple()
             ) {
                 onClick()
-            },
-        contentAlignment = Alignment.Center
+            }.then(sizeModifier)
     ) {
         Text(
             text = text,
